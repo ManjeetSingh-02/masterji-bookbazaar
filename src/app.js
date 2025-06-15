@@ -1,5 +1,12 @@
 // import local modules
 import { envConfig } from './utils/env.js';
+import {
+  authRouter,
+  booksRouter,
+  healthCheckRouter,
+  ordersRouter,
+  paymentsRouter,
+} from './api/routers.api.js';
 
 // import external modules
 import express from 'express';
@@ -33,6 +40,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // middlewares for handling API routes
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/books', booksRouter);
+app.use('/api/v1/healthcheck', healthCheckRouter);
+app.use('/api/v1/orders', ordersRouter);
+app.use('/api/v1/payments', paymentsRouter);
 
 // export app
 export default app;
