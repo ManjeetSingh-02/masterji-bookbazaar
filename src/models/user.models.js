@@ -1,5 +1,6 @@
 // import local modules
 import { envConfig } from '../utils/env.js';
+import { AvailableUserRoles, UserRolesEnum } from '../utils/constants.js';
 
 // import external modules
 import mongoose from 'mongoose';
@@ -30,6 +31,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    role: {
+      type: 'String',
+      enum: AvailableUserRoles,
+      default: UserRolesEnum.USER,
     },
     apikey: {
       type: String,
