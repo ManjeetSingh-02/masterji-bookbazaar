@@ -6,7 +6,7 @@ import {
   validateAPIKey,
   validateSchema,
 } from '../../../utils/route-protector.js';
-import { addBook, getAllBooks, getBookDetailsById } from './books.controllers.js';
+import { addBook, deleteBook, getAllBooks, getBookDetailsById } from './books.controllers.js';
 import { addBookSchema } from './books.zodschemas.js';
 import reviewsRouter from './reviews/reviews.routes.js';
 
@@ -31,6 +31,15 @@ router.get('/', isLoggedIn, validateAPIKey, getAllBooks);
 
 // @route GET /:bookId
 router.get('/:bookId', isLoggedIn, validateAPIKey, getBookDetailsById);
+
+// @route DELETE /:bookId
+router.delete(
+  '/:bookId',
+  isLoggedIn,
+  hasRequiredRole([UserRolesEnum.ADMIN]),
+  validateAPIKey,
+  deleteBook
+);
 
 // export router
 export default router;

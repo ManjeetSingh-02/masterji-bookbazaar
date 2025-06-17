@@ -58,3 +58,18 @@ export const getBookDetailsById = asyncHandler(async (req, res) => {
     .status(200)
     .json(new APIResponse(200, 'Book Details fetched successfully', existingBook));
 });
+
+// @controller DELETE /:bookId
+export const deleteBook = asyncHandler(async (req, res) => {
+  // get book details by it's id
+  const existingBook = await Book.findById(req.params.bookId);
+
+  // if book not found, throw error
+  if (!existingBook) throw new APIError(404, 'Delete Book Error', 'Book not found');
+
+  // delete book
+  await Book.deleteOne({ _id: req.params.bookId });
+
+  // success status to user
+  return res.status(200).json(new APIResponse(200, 'Book deleted successfully'));
+});
