@@ -6,7 +6,6 @@ import { AvailableUserRoles, UserRolesEnum } from '../utils/constants.js';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 
 // schema for user
 const userSchema = new mongoose.Schema(
@@ -36,11 +35,6 @@ const userSchema = new mongoose.Schema(
       type: 'String',
       enum: AvailableUserRoles,
       default: UserRolesEnum.USER,
-    },
-    apikey: {
-      type: String,
-      required: true,
-      default: () => crypto.randomBytes(32).toString('hex'),
     },
     refreshToken: {
       type: String,
