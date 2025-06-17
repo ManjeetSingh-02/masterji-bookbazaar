@@ -9,7 +9,8 @@ import { paginateResources } from '../../../utils/paginate.js';
 // @controller POST /
 export const addBook = asyncHandler(async (req, res) => {
   // get data from request body
-  const { title, description, authors, publisher, publishedYear, pageCount, coverImg } = req.body;
+  const { title, description, authors, publisher, publishedYear, pageCount, coverImg, price } =
+    req.body;
 
   // check if a book with the same title already exists
   const existingBook = await Book.findOne({ title });
@@ -25,6 +26,7 @@ export const addBook = asyncHandler(async (req, res) => {
     publishedYear,
     pageCount,
     coverImg,
+    price,
     addedBy: req.user.id,
   });
   if (!newBook)
@@ -69,7 +71,7 @@ export const getBookDetailsById = asyncHandler(async (req, res) => {
 // @controller PUT /:bookId
 export const updateBook = asyncHandler(async (req, res) => {
   // get data from request body
-  const { description, publisher, publishedYear, coverImg } = req.body;
+  const { description, publisher, publishedYear, coverImg, price } = req.body;
 
   // get book by it's id
   const existingBook = await Book.findById(req.params.bookId).select(
@@ -82,6 +84,7 @@ export const updateBook = asyncHandler(async (req, res) => {
   existingBook.publisher = publisher;
   existingBook.publishedYear = publishedYear;
   existingBook.coverImg = coverImg;
+  existingBook.price = price;
 
   // save updated book
   await existingBook.save();

@@ -37,6 +37,10 @@ const bookSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    price: {
+      type: Number,
+      required: true,
+    },
     coverImg: {
       type: String,
       trim: true,

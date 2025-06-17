@@ -43,6 +43,12 @@ const pageCountSchema = z
 // zod schema for coverImg
 const coverImgSchema = z.string().trim().url({ message: 'Thumbnail must be a valid URL' });
 
+// zod schema for price
+const priceSchema = z
+  .number()
+  .positive({ message: 'Price must be a positive number' })
+  .min(1, { message: 'Price must be at least 1' });
+
 // zod schema for addBook
 export const addBookSchema = z.object({
   title: titleSchema,
@@ -52,6 +58,7 @@ export const addBookSchema = z.object({
   publishedYear: publishedYearSchema,
   pageCount: pageCountSchema,
   coverImg: coverImgSchema,
+  price: priceSchema,
 });
 
 // zod schema for updateBook
@@ -60,4 +67,5 @@ export const updateBookSchema = z.object({
   publisher: publisherSchema,
   publishedYear: publishedYearSchema,
   coverImg: coverImgSchema,
+  price: priceSchema,
 });
