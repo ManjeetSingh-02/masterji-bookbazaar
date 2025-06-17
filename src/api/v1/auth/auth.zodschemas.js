@@ -1,3 +1,6 @@
+// import local modules
+import { ApiKeyActiveDaySlotsKeys } from '../../../utils/constants.js';
+
 // import external modules
 import { z } from 'zod';
 
@@ -48,4 +51,9 @@ export const registerUserSchema = z.object({
 export const loginUserSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
+});
+
+// zod schema for apiKey generation
+export const apiKeyGenerationSchema = z.object({
+  activeDays: z.union(ApiKeyActiveDaySlotsKeys.map(d => z.literal(d))),
 });

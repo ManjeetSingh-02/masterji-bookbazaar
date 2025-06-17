@@ -6,7 +6,7 @@ import {
   loginUser,
   registerUser,
 } from './auth.controllers.js';
-import { loginUserSchema, registerUserSchema } from './auth.zodschemas.js';
+import { apiKeyGenerationSchema, loginUserSchema, registerUserSchema } from './auth.zodschemas.js';
 
 // import external modules
 import { Router } from 'express';
@@ -21,7 +21,7 @@ router.post('/register', validateSchema(registerUserSchema), registerUser);
 router.post('/login', validateSchema(loginUserSchema), loginUser);
 
 // @route PATCH /api-key
-router.patch('/api-key', isLoggedIn, generateNewAPIKey);
+router.patch('/api-key', isLoggedIn, validateSchema(apiKeyGenerationSchema), generateNewAPIKey);
 
 // @route GET /me
 router.get('/me', isLoggedIn, getLoggedInUserProfile);
