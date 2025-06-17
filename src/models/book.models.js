@@ -31,10 +31,15 @@ const bookSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    coverImageURL: {
+    addedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    coverImg: {
       type: String,
       trim: true,
-      default: 'https://placehold.co/600x400?text=Default\nCover+Image',
+      required: true,
     },
   },
   { timestamps: true }
