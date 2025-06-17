@@ -1,0 +1,53 @@
+// import external modules
+import { z } from 'zod';
+
+// zod schema for title
+const titleSchema = z
+  .string()
+  .trim()
+  .nonempty({ message: 'Book Title is required' })
+  .min(3, { message: 'Book Title must be at least 3 characters long' })
+  .max(20, { message: 'Book Title must be at most 30 characters long' });
+
+// zod schema for description
+const descriptionSchema = z
+  .string()
+  .trim()
+  .nonempty({ message: 'Book Description is required' })
+  .min(3, { message: 'Book Description must be at least 20 characters long' })
+  .max(20, { message: 'Book Description must be at most 200 characters long' });
+
+// zod schema for authors
+const authorsSchema = z
+  .array(z.string().trim().nonempty({ message: 'Author Name is required' }))
+  .min(1, { message: 'At least one author is required' });
+
+// zod schema for publisher
+const publisherSchema = z.string().trim().nonempty({ message: 'Book Publisher name is required' });
+
+// zod schema for publishedDate
+const publishedDateSchema = z
+  .string()
+  .trim()
+  .nonempty({ message: 'Book Published Date is required' });
+
+// zod schema for pageCount
+const pageCountSchema = z
+  .number()
+  .int()
+  .positive({ message: 'Page Count must be a positive integer' })
+  .min(1, { message: 'Page Count must be at least 1' });
+
+// zod schema for coverImg
+const coverImgSchema = z.string().trim().url({ message: 'Thumbnail must be a valid URL' });
+
+// zod schema for addBook
+export const addBookSchema = z.object({
+  title: titleSchema,
+  description: descriptionSchema,
+  authors: authorsSchema,
+  publisher: publisherSchema,
+  publishedDate: publishedDateSchema,
+  pageCount: pageCountSchema,
+  coverImg: coverImgSchema,
+});
