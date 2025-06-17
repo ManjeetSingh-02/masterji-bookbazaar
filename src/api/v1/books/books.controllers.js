@@ -59,12 +59,34 @@ export const getBookDetailsById = asyncHandler(async (req, res) => {
     .json(new APIResponse(200, 'Book Details fetched successfully', existingBook));
 });
 
+// @controller PUT /:bookId
+export const updateBook = asyncHandler(async (req, res) => {
+  // get data from request body
+  const { description, publisher, publishedDate, coverImg } = req.body;
+
+  // get book by it's id
+  const existingBook = await Book.findById(req.params.bookId).select(
+    '_id description publisher publishedDate coverImg'
+  );
+  if (!existingBook) throw new APIError(404, 'Update Book Error', 'Book not found');
+
+  // update book
+  existingBook.description = description;
+  existingBook.publisher = publisher;
+  existingBook.publishedDate = publishedDate;
+  existingBook.coverImg = coverImg;
+
+  // save updated book
+  await existingBook.save();
+
+  // success status to user
+  return res.status(200).json(new APIResponse(200, 'Book updated successfully', existingBook));
+});
+
 // @controller DELETE /:bookId
 export const deleteBook = asyncHandler(async (req, res) => {
-  // get book details by it's id
+  // get book by it's id
   const existingBook = await Book.findById(req.params.bookId);
-
-  // if book not found, throw error
   if (!existingBook) throw new APIError(404, 'Delete Book Error', 'Book not found');
 
   // delete book

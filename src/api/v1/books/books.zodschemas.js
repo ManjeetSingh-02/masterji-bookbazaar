@@ -7,15 +7,15 @@ const titleSchema = z
   .trim()
   .nonempty({ message: 'Book Title is required' })
   .min(3, { message: 'Book Title must be at least 3 characters long' })
-  .max(20, { message: 'Book Title must be at most 30 characters long' });
+  .max(30, { message: 'Book Title must be at most 30 characters long' });
 
 // zod schema for description
 const descriptionSchema = z
   .string()
   .trim()
   .nonempty({ message: 'Book Description is required' })
-  .min(3, { message: 'Book Description must be at least 20 characters long' })
-  .max(20, { message: 'Book Description must be at most 200 characters long' });
+  .min(10, { message: 'Book Description must be at least 10 characters long' })
+  .max(200, { message: 'Book Description must be at most 200 characters long' });
 
 // zod schema for authors
 const authorsSchema = z
@@ -49,5 +49,13 @@ export const addBookSchema = z.object({
   publisher: publisherSchema,
   publishedDate: publishedDateSchema,
   pageCount: pageCountSchema,
+  coverImg: coverImgSchema,
+});
+
+// zod schema for updateBook
+export const updateBookSchema = z.object({
+  description: descriptionSchema,
+  publisher: publisherSchema,
+  publishedDate: publishedDateSchema,
   coverImg: coverImgSchema,
 });
