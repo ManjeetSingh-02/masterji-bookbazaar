@@ -14,7 +14,8 @@ import {
   getBookDetailsById,
 } from './books.controllers.js';
 import { addBookSchema, updateBookSchema } from './books.zodschemas.js';
-import reviewsRouter from './reviews/reviews.routes.js';
+import { addReviewSchema } from './reviews/reviews.zodschemas.js';
+import { addReview, deleteReview, getAllReviews } from './reviews/reviews.controllers.js';
 
 // import external modules
 import { Router } from 'express';
@@ -56,6 +57,21 @@ router.delete(
   validateAPIKey,
   deleteBook
 );
+
+// @route POST /:bookId/reviews
+router.post(
+  '/:bookId/reviews',
+  isLoggedIn,
+  validateAPIKey,
+  validateSchema(addReviewSchema),
+  addReview
+);
+
+// @route GET /:bookId/reviews
+router.get('/:bookId/reviews', isLoggedIn, validateAPIKey, getAllReviews);
+
+// @route DELETE /:bookId/reviews/:reviewId
+router.delete('/:bookId/reviews/:reviewId', isLoggedIn, validateAPIKey, deleteReview);
 
 // export router
 export default router;
