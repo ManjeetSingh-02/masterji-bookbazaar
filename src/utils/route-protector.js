@@ -3,6 +3,7 @@ import { envConfig } from './env.js';
 import { APIError } from '../api/error.api.js';
 import { asyncHandler } from './async-handler.js';
 import { User } from '../models/user.models.js';
+import { APIKey } from '../models/api_key.models.js';
 
 // import external modules
 import jwt from 'jsonwebtoken';
@@ -70,3 +71,19 @@ export const hasRequiredRole = roles =>
     // forward request to next middleware
     next();
   });
+
+// function to validate API key
+export const validateAPIKey = asyncHandler(async (req, _, next) => {
+  // get API key from request headers
+  const apiKey = req.headers['x-api-key'] ?? '';
+
+  // check if the API key provided belong to the logged-in user
+  const existingAPIKey = await APIKey.findOne({
+    user: req.user.id,
+    key: apiKey,
+  });
+  if (!existingAPIKey) throw new APIError(401, 'Security Error', 'Invalid API Key');
+
+  // forward request to next middleware
+  next();
+});
