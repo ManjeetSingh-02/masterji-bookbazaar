@@ -4,6 +4,8 @@ import { asyncHandler } from '../../../utils/async-handler.js';
 import { User } from '../../../models/user.models.js';
 import { APIError } from '../../error.api.js';
 import { APIResponse } from '../../response.api.js';
+import { APIKey } from '../../../models/api_key.models.js';
+import { ApiKeyActiveDaySlotsEnum } from '../../../utils/constants.js';
 
 // import external modules
 import crypto from 'crypto';
@@ -86,19 +88,30 @@ export const loginUser = asyncHandler(async (req, res) => {
 
 // @controller PATCH /api-key
 export const generateNewAPIKey = asyncHandler(async (req, res) => {
-  // get user from db by it's id
-  const existingUser = await User.findById(req.user.id).select('apikey');
+  // get data from body
+  const { activeDays } = req.body;
 
-  // generate new APIKey
-  existingUser.apikey = crypto.randomBytes(32).toString('hex');
+  // delete existing API key if exists
+  await APIKey.findOneAndDelete({ user: req.user.id });
 
-  // update user in db
-  await existingUser.save({ validateBeforeSave: false });
+  // generate new API key
+  const newAPIKey = await APIKey.create({
+    user: req.user.id,
+    key: crypto.randomBytes(32).toString('hex'),
+    activeSlot: ApiKeyActiveDaySlotsEnum[activeDays](),
+  });
+  if (!newAPIKey)
+    throw new APIError(
+      500,
+      'API Key Generation Error',
+      'Something went wrong while generating new API key'
+    );
 
   // success status to user
-  return res.status(200).json(
-    new APIResponse(200, 'User profile fetched successfully', {
-      newAPIKey: existingUser.apikey,
+  return res.status(201).json(
+    new APIResponse(201, 'New API key generated successfully', {
+      apiKey: newAPIKey.key,
+      activeSlot: newAPIKey.activeSlot.toLocaleString(),
     })
   );
 });
