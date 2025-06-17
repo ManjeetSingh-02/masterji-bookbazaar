@@ -7,7 +7,7 @@ import { Book } from '../../../models/book.models.js';
 // @controller POST /
 export const addBook = asyncHandler(async (req, res) => {
   // get data from request body
-  const { title, description, authors, publisher, publishedDate, pageCount, coverImg } = req.body;
+  const { title, description, authors, publisher, publishedYear, pageCount, coverImg } = req.body;
 
   // check if a book with the same title already exists
   const existingBook = await Book.findOne({ title });
@@ -20,7 +20,7 @@ export const addBook = asyncHandler(async (req, res) => {
     description,
     authors,
     publisher,
-    publishedDate,
+    publishedYear,
     pageCount,
     coverImg,
     addedBy: req.user.id,
@@ -62,18 +62,18 @@ export const getBookDetailsById = asyncHandler(async (req, res) => {
 // @controller PUT /:bookId
 export const updateBook = asyncHandler(async (req, res) => {
   // get data from request body
-  const { description, publisher, publishedDate, coverImg } = req.body;
+  const { description, publisher, publishedYear, coverImg } = req.body;
 
   // get book by it's id
   const existingBook = await Book.findById(req.params.bookId).select(
-    '_id description publisher publishedDate coverImg'
+    '_id description publisher publishedYear coverImg'
   );
   if (!existingBook) throw new APIError(404, 'Update Book Error', 'Book not found');
 
   // update book
   existingBook.description = description;
   existingBook.publisher = publisher;
-  existingBook.publishedDate = publishedDate;
+  existingBook.publishedYear = publishedYear;
   existingBook.coverImg = coverImg;
 
   // save updated book
