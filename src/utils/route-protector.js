@@ -82,7 +82,7 @@ export const validateAPIKey = asyncHandler(async (req, _, next) => {
     user: req.user.id,
     key: apiKey,
   });
-  if (!existingAPIKey) throw new APIError(401, 'Security Error', 'Invalid API Key');
+  if (!existingAPIKey) throw new APIError(401, 'Security Error', 'Invalid or Expired API Key');
 
   // forward request to next middleware
   next();
