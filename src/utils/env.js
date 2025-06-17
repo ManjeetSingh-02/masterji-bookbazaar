@@ -15,6 +15,11 @@ export const envConfig = {
   ACCESS_TOKEN_EXPIRY: String(process.env.ACCESS_TOKEN_EXPIRY),
   REFRESH_TOKEN_SECRET: String(process.env.REFRESH_TOKEN_SECRET),
   REFRESH_TOKEN_EXPIRY: String(process.env.REFRESH_TOKEN_EXPIRY),
+  MAIL_SERVICE_HOST: String(process.env.MAIL_SERVICE_HOST),
+  MAIL_SERVICE_PORT: Number(process.env.MAIL_SERVICE_PORT),
+  MAIL_SERVICE_USERNAME: String(process.env.MAIL_SERVICE_USERNAME),
+  MAIL_SERVICE_PASSWORD: String(process.env.MAIL_SERVICE_PASSWORD),
+  MAIL_SERVICE_FROM: String(process.env.MAIL_SERVICE_FROM),
 };
 
 // zod schema for environment variables
@@ -35,6 +40,13 @@ export const envSchema = z.object({
   REFRESH_TOKEN_EXPIRY: z
     .string()
     .regex(/^\d+[smhd]$/, 'REFRESH_TOKEN_EXPIRY must be a valid duration (e.g., 15m, 1h, 1d)'),
+  MAIL_SERVICE_HOST: z.string(),
+  MAIL_SERVICE_PORT: z.number().int().positive(),
+  MAIL_SERVICE_USERNAME: z.string(),
+  MAIL_SERVICE_PASSWORD: z.string(),
+  MAIL_SERVICE_FROM: z
+    .string()
+    .email({ message: 'MAIL_SERVICE_FROM must be a valid email address' }),
 });
 
 // function to validate environment variables

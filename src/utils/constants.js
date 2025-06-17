@@ -16,3 +16,15 @@ export const ApiKeyActiveDaySlotsEnum = {
 
 // keys array of the ApiKeyActiveDaySlotsEnum
 export const ApiKeyActiveDaySlotsKeys = Object.keys(ApiKeyActiveDaySlotsEnum).map(k => Number(k));
+
+// all possible order statuses
+export const OrderStatusEnum = {
+  ORDERED: 'Ordered',
+  PROCESSING: 'Processing',
+  SHIPPED: 'Shipped',
+  DELIVERED: 'Delivered',
+  CANCELLED: 'Cancelled',
+};
+
+// values array of the OrderStatusEnum
+export const AvailableOrderStatuses = Object.values(OrderStatusEnum);
