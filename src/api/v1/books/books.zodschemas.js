@@ -25,11 +25,13 @@ const authorsSchema = z
 // zod schema for publisher
 const publisherSchema = z.string().trim().nonempty({ message: 'Book Publisher name is required' });
 
-// zod schema for publishedDate
-const publishedDateSchema = z
-  .string()
-  .trim()
-  .nonempty({ message: 'Book Published Date is required' });
+// zod schema for publishedYear
+const publishedYearSchema = z
+  .number()
+  .int()
+  .positive({ message: 'Published Year must be a positive integer' })
+  .min(1000, { message: 'Published Year must be at least 1000' })
+  .max(new Date().getFullYear(), { message: `Published Year cannot be in the future` });
 
 // zod schema for pageCount
 const pageCountSchema = z
@@ -47,7 +49,7 @@ export const addBookSchema = z.object({
   description: descriptionSchema,
   authors: authorsSchema,
   publisher: publisherSchema,
-  publishedDate: publishedDateSchema,
+  publishedYear: publishedYearSchema,
   pageCount: pageCountSchema,
   coverImg: coverImgSchema,
 });
@@ -56,6 +58,6 @@ export const addBookSchema = z.object({
 export const updateBookSchema = z.object({
   description: descriptionSchema,
   publisher: publisherSchema,
-  publishedDate: publishedDateSchema,
+  publishedYear: publishedYearSchema,
   coverImg: coverImgSchema,
 });

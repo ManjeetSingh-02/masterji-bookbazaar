@@ -23,8 +23,9 @@ const bookSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    publishedDate: {
-      type: Date,
+    publishedYear: {
+      type: Number,
+      length: 4,
       required: true,
     },
     pageCount: {
