@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema(
       enum: AvailableUserRoles,
       default: UserRolesEnum.USER,
     },
+    apikey: {
+      type: String,
+      default: '',
+    },
     refreshToken: {
       type: String,
     },

@@ -107,6 +107,19 @@ export const generateNewAPIKey = asyncHandler(async (req, res) => {
       'Something went wrong while generating new API key'
     );
 
+  // update user with new API key
+  const updatedUser = await User.findByIdAndUpdate(
+    req.user.id,
+    { apikey: newAPIKey.key },
+    { new: true, runValidators: true }
+  );
+  if (!updatedUser)
+    throw new APIError(
+      500,
+      'API Key Generation Error',
+      'Something went wrong while updating API key for user'
+    );
+
   // success status to user
   return res.status(201).json(
     new APIResponse(201, 'New API key generated successfully', {
