@@ -3,6 +3,8 @@ import { asyncHandler } from '../../../utils/async-handler.js';
 import { APIError } from '../../error.api.js';
 import { APIResponse } from '../../response.api.js';
 import { Book } from '../../../models/book.models.js';
+import { Review } from '../../../models/review.models.js';
+import { paginateResources } from '../../../utils/paginate.js';
 
 // @controller POST /
 export const addBook = asyncHandler(async (req, res) => {
@@ -39,8 +41,13 @@ export const getAllBooks = asyncHandler(async (req, res) => {
     .populate('addedBy', '_id username role')
     .select('-createdAt -updatedAt -__v');
 
+  // paginate books
+  const paginatedBooks = paginateResources(allBooks, 10);
+
   // success status to user
-  return res.status(200).json(new APIResponse(200, 'All Books fetched successfully', allBooks));
+  return res
+    .status(200)
+    .json(new APIResponse(200, 'All Books fetched successfully', paginatedBooks));
 });
 
 // @controller GET /:bookId
@@ -88,6 +95,9 @@ export const deleteBook = asyncHandler(async (req, res) => {
   // get book by it's id
   const existingBook = await Book.findById(req.params.bookId);
   if (!existingBook) throw new APIError(404, 'Delete Book Error', 'Book not found');
+
+  // delete all the reviews associated with the book
+  await Review.deleteMany({ bookId: existingBook._id });
 
   // delete book
   await Book.deleteOne({ _id: req.params.bookId });
