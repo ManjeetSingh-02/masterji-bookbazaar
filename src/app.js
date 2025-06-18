@@ -3,6 +3,7 @@ import { envConfig } from './utils/env.js';
 import {
   authRouter,
   booksRouter,
+  cartRouter,
   healthCheckRouter,
   ordersRouter,
   paymentsRouter,
@@ -45,6 +46,7 @@ app.use('/api/v1/books', booksRouter);
 app.use('/api/v1/healthcheck', healthCheckRouter);
 app.use('/api/v1/orders', ordersRouter);
 app.use('/api/v1/payments', paymentsRouter);
+app.use('/api/v1/cart', cartRouter);
 
 // export app
 export default app;
