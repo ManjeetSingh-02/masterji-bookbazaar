@@ -28,3 +28,13 @@ export const OrderStatusEnum = {
 
 // values array of the OrderStatusEnum
 export const AvailableOrderStatuses = Object.values(OrderStatusEnum);
+
+// all possible payment statuses
+export const PaymentStatusEnum = {
+  PENDING: 'Pending',
+  COMPLETED: 'Completed',
+  FAILED: 'Failed',
+};
+
+// values array of the PaymentStatusEnum
+export const AvailablePaymentStatuses = Object.values(PaymentStatusEnum);

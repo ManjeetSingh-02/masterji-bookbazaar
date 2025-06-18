@@ -2,11 +2,11 @@
 import { envConfig } from './env.js';
 
 // function to generate the content of order confirmation email
-export const orderConfirmationMailContentGenerator = (fullname, bookName) => {
+export const orderConfirmationMailContentGenerator = (fullname, orderId) => {
   return {
     body: {
       name: fullname,
-      intro: `Thank you for your order! We are excited to let you know that your order for "${bookName}" has been successfully placed.`,
+      intro: `Thank you for your order! Your order ID is ${orderId}.`,
       action: {
         instructions: 'View Order Details',
         button: {
