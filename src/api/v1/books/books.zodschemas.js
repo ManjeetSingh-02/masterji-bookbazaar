@@ -1,3 +1,6 @@
+// import local modules
+import { AvailableActionTypes } from '../../../utils/constants.js';
+
 // import external modules
 import { z } from 'zod';
 
@@ -68,4 +71,10 @@ export const updateBookSchema = z.object({
   publishedYear: publishedYearSchema,
   coverImg: coverImgSchema,
   price: priceSchema,
+});
+
+// zod schema for searchBook
+export const searchBookSchema = z.object({
+  searchType: z.enum(AvailableActionTypes),
+  searchQuery: z.string().trim().nonempty({ message: 'Search query is required' }),
 });

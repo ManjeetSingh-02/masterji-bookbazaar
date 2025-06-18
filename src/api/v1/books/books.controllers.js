@@ -5,6 +5,7 @@ import { APIResponse } from '../../response.api.js';
 import { Book } from '../../../models/book.models.js';
 import { Review } from '../../../models/review.models.js';
 import { paginateResources } from '../../../utils/paginate.js';
+import { ActionTypeEnum } from '../../../utils/constants.js';
 
 // @controller POST /
 export const addBook = asyncHandler(async (req, res) => {
@@ -107,4 +108,36 @@ export const deleteBook = asyncHandler(async (req, res) => {
 
   // success status to user
   return res.status(200).json(new APIResponse(200, 'Book deleted successfully'));
+});
+
+// @controller POST /search
+export const searchBook = asyncHandler(async (req, res) => {
+  // get data from request body
+  const { searchType, searchQuery } = req.body;
+
+  // array to hold search results
+  let searchedResults = [];
+
+  // search books based on search type
+  if (searchType === ActionTypeEnum.TITLE)
+    searchedResults = await Book.find({ title: searchQuery });
+
+  if (searchType === ActionTypeEnum.AUTHOR)
+    searchedResults = await Book.find({ authors: { $in: [searchQuery] } });
+  if (searchType === ActionTypeEnum.PUBLISHER)
+    searchedResults = await Book.find({ publisher: searchQuery });
+  if (searchType === ActionTypeEnum.PUBLISHED_YEAR)
+    searchedResults = await Book.find({ publishedYear: Number(searchQuery) });
+
+  // if no results found, throw error
+  if (searchedResults.length === 0)
+    throw new APIError(404, 'Search Book Error', 'No books found for the given search criteria');
+
+  // paginate search results
+  const paginatedResults = paginateResources(searchedResults, 10);
+
+  // success status to user
+  return res
+    .status(200)
+    .json(new APIResponse(200, 'Books searched successfully', paginatedResults));
 });
