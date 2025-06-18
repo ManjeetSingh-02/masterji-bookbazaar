@@ -2,10 +2,11 @@
 import { z } from 'zod';
 
 export const createOrderSchema = z.object({
-  quantity: z
-    .number()
-    .positive('Quantity must be a greater than 0')
-    .min(1, 'Quantity must be at least 1')
-    .max(100, 'Quantity cannot exceed 100'),
-  address: z.string(),
+  items: z.array(
+    z.object({
+      bookId: z.string().nonempty('Book ID is required'),
+      quantity: z.number().int().min(1, 'Quantity must be at least 1'),
+    })
+  ),
+  shippingAddress: z.string().nonempty('Shipping address is required'),
 });

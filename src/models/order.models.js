@@ -12,16 +12,32 @@ const orderSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    bookId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Book',
+    items: {
+      type: [
+        {
+          bookId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Book',
+            required: true,
+          },
+          bookTitle: {
+            type: String,
+            trim: true,
+            required: true,
+          },
+          quantity: {
+            type: Number,
+            required: true,
+          },
+          price: {
+            type: Number,
+            required: true,
+          },
+        },
+      ],
       required: true,
     },
-    quantity: {
-      type: Number,
-      required: true,
-    },
-    pricePerQuantity: {
+    totalPrice: {
       type: Number,
       required: true,
     },
@@ -30,14 +46,15 @@ const orderSchema = new mongoose.Schema(
       enum: AvailableOrderStatuses,
       default: OrderStatusEnum.ORDERED,
     },
-    estimatedDeliveryDate: {
-      type: Date,
-      default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    },
-    address: {
+    shippingAddress: {
       type: String,
       trim: true,
       required: true,
+    },
+    paymentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Payment',
+      default: null,
     },
   },
   { timestamps: true }
