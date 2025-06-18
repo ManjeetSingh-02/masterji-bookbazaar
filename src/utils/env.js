@@ -20,6 +20,8 @@ export const envConfig = {
   MAIL_SERVICE_USERNAME: String(process.env.MAIL_SERVICE_USERNAME),
   MAIL_SERVICE_PASSWORD: String(process.env.MAIL_SERVICE_PASSWORD),
   MAIL_SERVICE_FROM: String(process.env.MAIL_SERVICE_FROM),
+  RAZORPAY_KEY_ID: String(process.env.RAZORPAY_KEY_ID),
+  RAZORPAY_KEY_SECRET: String(process.env.RAZORPAY_KEY_SECRET),
 };
 
 // zod schema for environment variables
@@ -47,6 +49,8 @@ export const envSchema = z.object({
   MAIL_SERVICE_FROM: z
     .string()
     .email({ message: 'MAIL_SERVICE_FROM must be a valid email address' }),
+  RAZORPAY_KEY_ID: z.string(),
+  RAZORPAY_KEY_SECRET: z.string(),
 });
 
 // function to validate environment variables
