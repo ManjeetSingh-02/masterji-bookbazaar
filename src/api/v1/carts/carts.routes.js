@@ -1,7 +1,7 @@
 // import local modules
 import { isLoggedIn, validateAPIKey, validateSchema } from '../../../utils/route-protector.js';
-import { createCart, updateCart, getCart } from './cart.controllers.js';
-import { createCartSchema, updateCartSchema } from './cart.zodschemas.js';
+import { createCart, updateCart, getCart } from './carts.controllers.js';
+import { createCartSchema, updateCartSchema } from './carts.zodschemas.js';
 
 // import external modules
 import { Router } from 'express';

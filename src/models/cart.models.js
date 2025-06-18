@@ -28,20 +28,20 @@ const itemSchema = new mongoose.Schema(
   }
 );
 
-// schema for cart_item
-const cartItemSchema = new mongoose.Schema(
+// schema for cart
+const cartSchema = new mongoose.Schema(
   {
     items: {
       type: [itemSchema],
-      required: true,
+      default: [],
     },
     totalQuantity: {
       type: Number,
-      required: true,
+      default: 0,
     },
     totalPrice: {
       type: Number,
-      required: true,
+      default: 0,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -52,5 +52,5 @@ const cartItemSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// export cart_item model
-export const CartItem = mongoose.model('CartItem', cartItemSchema);
+// export cart model
+export const Cart = mongoose.model('Cart', cartSchema);
