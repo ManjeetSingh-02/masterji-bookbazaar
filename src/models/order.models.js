@@ -4,6 +4,73 @@ import { AvailableOrderStatuses, OrderStatusEnum } from '../utils/constants.js';
 // import external modules
 import mongoose from 'mongoose';
 
+// schema for shipping address
+const shippingAddressSchema = new mongoose.Schema(
+  {
+    houseNo: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    street: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    city: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    state: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    country: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    pincode: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+  },
+  {
+    timestamps: false,
+    _id: false,
+  }
+);
+
+// schema for item
+const itemSchema = new mongoose.Schema(
+  {
+    bookId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Book',
+      required: true,
+    },
+    bookTitle: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
 // schema for order
 const orderSchema = new mongoose.Schema(
   {
@@ -13,28 +80,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     items: {
-      type: [
-        {
-          bookId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Book',
-            required: true,
-          },
-          bookTitle: {
-            type: String,
-            trim: true,
-            required: true,
-          },
-          quantity: {
-            type: Number,
-            required: true,
-          },
-          price: {
-            type: Number,
-            required: true,
-          },
-        },
-      ],
+      type: [itemSchema],
       required: true,
     },
     totalPrice: {
@@ -47,8 +93,7 @@ const orderSchema = new mongoose.Schema(
       default: OrderStatusEnum.ORDERED,
     },
     shippingAddress: {
-      type: String,
-      trim: true,
+      type: shippingAddressSchema,
       required: true,
     },
     paymentId: {

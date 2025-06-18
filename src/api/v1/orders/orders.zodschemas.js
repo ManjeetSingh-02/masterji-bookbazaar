@@ -8,5 +8,12 @@ export const createOrderSchema = z.object({
       quantity: z.number().int().min(1, 'Quantity must be at least 1'),
     })
   ),
-  shippingAddress: z.string().nonempty('Shipping address is required'),
+  shippingAddress: z.object({
+    houseNo: z.string().nonempty('House number is required'),
+    street: z.string().nonempty('Street is required'),
+    city: z.string().nonempty('City is required'),
+    state: z.string().nonempty('State is required'),
+    country: z.string().nonempty('Country is required'),
+    pincode: z.string().nonempty('Pincode is required'),
+  }),
 });
