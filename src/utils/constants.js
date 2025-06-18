@@ -39,13 +39,31 @@ export const PaymentStatusEnum = {
 // values array of the PaymentStatusEnum
 export const AvailablePaymentStatuses = Object.values(PaymentStatusEnum);
 
-// all possible action types for books
-export const ActionTypeEnum = {
+// all possible search types for books
+export const SearchTypeEnum = {
   TITLE: 'title',
   AUTHOR: 'author',
   PUBLISHER: 'publisher',
   PUBLISHED_YEAR: 'publishedYear',
 };
 
-// values array of the ActionTypeEnum
-export const AvailableActionTypes = Object.values(ActionTypeEnum);
+// values array of the SearchTypeEnum
+export const AvailableSearchTypes = Object.values(SearchTypeEnum);
+
+// all possible sorting orders
+export const SortOrderEnum = {
+  ASC: 'asc',
+  DESC: 'desc',
+};
+
+// values array of the SortOrderEnum
+export const AvailableSortOrders = Object.values(SortOrderEnum);
+
+// all possible action types for books
+export const SortTypeEnum = {
+  TITLE: 'title',
+  PUBLISHED_YEAR: 'publishedYear',
+};
+
+// values array of the SortTypeEnum
+export const AvailableSortTypes = Object.values(SortTypeEnum);

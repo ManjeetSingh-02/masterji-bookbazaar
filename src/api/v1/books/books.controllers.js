@@ -5,7 +5,7 @@ import { APIResponse } from '../../response.api.js';
 import { Book } from '../../../models/book.models.js';
 import { Review } from '../../../models/review.models.js';
 import { paginateResources } from '../../../utils/paginate.js';
-import { ActionTypeEnum } from '../../../utils/constants.js';
+import { SearchTypeEnum, SortOrderEnum, SortTypeEnum } from '../../../utils/constants.js';
 
 // @controller POST /
 export const addBook = asyncHandler(async (req, res) => {
@@ -119,14 +119,16 @@ export const searchBook = asyncHandler(async (req, res) => {
   let searchedResults = [];
 
   // search books based on search type
-  if (searchType === ActionTypeEnum.TITLE)
+  if (searchType === SearchTypeEnum.TITLE)
     searchedResults = await Book.find({ title: searchQuery });
 
-  if (searchType === ActionTypeEnum.AUTHOR)
+  if (searchType === SearchTypeEnum.AUTHOR)
     searchedResults = await Book.find({ authors: { $in: [searchQuery] } });
-  if (searchType === ActionTypeEnum.PUBLISHER)
+
+  if (searchType === SearchTypeEnum.PUBLISHER)
     searchedResults = await Book.find({ publisher: searchQuery });
-  if (searchType === ActionTypeEnum.PUBLISHED_YEAR)
+
+  if (searchType === SearchTypeEnum.PUBLISHED_YEAR)
     searchedResults = await Book.find({ publishedYear: Number(searchQuery) });
 
   // if no results found, throw error
@@ -140,4 +142,28 @@ export const searchBook = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new APIResponse(200, 'Books searched successfully', paginatedResults));
+});
+
+// @controller POST /sort
+export const sortBooks = asyncHandler(async (req, res) => {
+  // get data from request body
+  const { sortType, sortOrder } = req.body;
+
+  // array to hold search results
+  let sortedResults = [];
+
+  // sort books based on sortType
+  if (sortType === SortTypeEnum.TITLE)
+    sortedResults = await Book.find.sort({ title: sortOrder === SortOrderEnum.ASC ? 1 : -1 });
+
+  if (sortType === SortTypeEnum.PUBLISHED_YEAR)
+    sortedResults = await Book.find().sort({
+      publishedYear: sortOrder === SortOrderEnum.ASC ? 1 : -1,
+    });
+
+  // paginate sort results
+  const paginatedResults = paginateResources(sortedResults, 10);
+
+  // success status to user
+  return res.status(200).json(new APIResponse(200, 'Books sorted successfully', paginatedResults));
 });

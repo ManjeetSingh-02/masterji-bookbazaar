@@ -13,8 +13,14 @@ import {
   getAllBooks,
   getBookDetailsById,
   searchBook,
+  sortBooks,
 } from './books.controllers.js';
-import { addBookSchema, searchBookSchema, updateBookSchema } from './books.zodschemas.js';
+import {
+  addBookSchema,
+  searchBookSchema,
+  sortBooksSchema,
+  updateBookSchema,
+} from './books.zodschemas.js';
 import { addReviewSchema } from './reviews/reviews.zodschemas.js';
 import { addReview, deleteReview, getAllReviews } from './reviews/reviews.controllers.js';
 
@@ -76,6 +82,9 @@ router.delete('/:bookId/reviews/:reviewId', isLoggedIn, validateAPIKey, deleteRe
 
 // @route POST /search
 router.post('/search', isLoggedIn, validateAPIKey, validateSchema(searchBookSchema), searchBook);
+
+// @route POST /sort
+router.post('/sort', isLoggedIn, validateAPIKey, validateSchema(sortBooksSchema), sortBooks);
 
 // export router
 export default router;
