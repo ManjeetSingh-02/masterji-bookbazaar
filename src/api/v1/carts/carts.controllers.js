@@ -28,7 +28,23 @@ export const createCart = asyncHandler(async (req, res) => {
 });
 
 // @controller GET /
-export const getCart = asyncHandler(async (req, res) => {});
+export const getCart = asyncHandler(async (req, res) => {
+  // get cart by userId
+  const existingCart = await Cart.findOne({ userId: req.user.id }).select(
+    '_id items totalQuantity totalPrice'
+  );
+  if (!existingCart) throw new APIError(404, 'Get Cart Error', 'Cart Not Found');
+
+  // success status to user
+  return res.status(200).json(
+    new APIResponse(200, 'Cart retrieved successfully', {
+      _id: existingCart._id,
+      items: existingCart.items,
+      totalQuantity: existingCart.totalQuantity,
+      totalPrice: existingCart.totalPrice,
+    })
+  );
+});
 
 // @controller PUT /
 export const updateCart = asyncHandler(async (req, res) => {});
